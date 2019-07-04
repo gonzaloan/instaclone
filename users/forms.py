@@ -7,14 +7,6 @@ from django import forms
 from users.models import User, Profile
 
 
-class ProfileForm(forms.Form):
-    """Profile form"""
-    website = forms.URLField(max_length=200, required=True)
-    biography = forms.CharField(max_length=500, required=True)
-    phone_number = forms.CharField(max_length=20, required=True)
-    picture = forms.ImageField(required=False)
-
-
 class SignUpForm(forms.Form):
     """Sign up form"""
     username = forms.CharField(min_length=4, max_length=50)
@@ -49,4 +41,3 @@ class SignUpForm(forms.Form):
         user = User.objects.create_user(**data)
         profile = Profile(user=user)
         profile.save()
-
