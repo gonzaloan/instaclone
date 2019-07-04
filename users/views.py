@@ -1,11 +1,12 @@
 """ User views"""
 
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import logout
+from django.contrib.auth import views as auth_views
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 # Models
 from django.contrib.auth.models import User
-from django.shortcuts import render, redirect
+from django.shortcuts import redirect
 from django.urls import reverse, reverse_lazy
 from django.views.generic import DetailView, FormView, UpdateView
 
@@ -48,28 +49,14 @@ class SignUpView(FormView):
         return super().form_valid(form)
 
 
-def login_view(request):
-    """Login view"""
-    if request.method == 'POST':
-        username = request.POST['username']
-        password = request.POST['password']
-        user = authenticate(request, username=username, password=password)
-        if user:
-            login(request, user)
-            # Redirección
-            return redirect('posts:feed')
-        else:
-            return render(request, 'users/login.html', {'error': 'Invalid Username and password'})
-
-    return render(request, 'users/login.html')
+class LoginView(auth_views.LoginView):
+    """Login View"""
+    template_name = 'users/login.html'
 
 
-@login_required
-def logout_view(request):
-    """Logout a user"""
-    logout(request)
-    return redirect('users:login')
-
+class LogoutView(LoginRequiredMixin,auth_views.LogoutView):
+    """Logout View"""
+    template_name = ''
 
 class UpdateProfileView(LoginRequiredMixin, UpdateView):
     """Update Profile View"""

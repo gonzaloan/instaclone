@@ -7,13 +7,12 @@ from users import views
 
 urlpatterns = [
 
-
     # Management
     path(route='users/login/',
-         view=views.login_view,
+         view=views.LoginView.as_view(),
          name='login'),
     path(route='users/logout/',
-         view=views.logout_view,
+         view=views.LogoutView.as_view(),
          name='logout'),
     path(route='users/signup/',
          view=views.SignUpView.as_view(),
